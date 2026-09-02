@@ -17,7 +17,7 @@ Gestor
 
 bruno@empresa.com
 Solicitante
-segui a regra de senha do gestor
+(segui a regra de senha do gestor)
 
 candido@empresa.com
 auditor
