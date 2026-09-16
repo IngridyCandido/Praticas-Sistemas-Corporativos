@@ -13,14 +13,18 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SolicitacoesService = void 0;
-const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const solicitacao_entity_1 = require("./solicitacao.entity");
+const common_1 = require("@nestjs/common");
+const typeorm_3 = require("typeorm");
+const auditoria_entity_1 = require("../auditoria/auditoria.entity");
 let SolicitacoesService = class SolicitacoesService {
     repository;
-    constructor(repository) {
+    dataSource;
+    constructor(repository, dataSource) {
         this.repository = repository;
+        this.dataSource = dataSource;
     }
     listar() {
         return this.repository.find({ order: { id: 'ASC' } });
@@ -39,16 +43,46 @@ let SolicitacoesService = class SolicitacoesService {
         });
         return this.repository.save(solicitacao);
     }
-    async aprovar(id) {
-        const solicitacao = await this.buscarPorId(id);
-        solicitacao.status = 'aprovada';
-        return this.repository.save(solicitacao);
+    async aprovar(id, versaoEsperada, atorId) {
+        return this.dataSource.transaction(async (manager) => {
+            const solicitacao = await manager.findOneBy(solicitacao_entity_1.Solicitacao, { id });
+            if (!solicitacao) {
+                throw new common_1.NotFoundException('Solicitação não encontrada');
+            }
+            if (solicitacao.status !== 'pendente') {
+                throw new common_1.ConflictException('Solicitação não está pendente');
+            }
+            const resultado = await manager
+                .createQueryBuilder()
+                .update(solicitacao_entity_1.Solicitacao)
+                .set({ status: 'aprovada', versao: () => 'versao + 1' })
+                .where('id = :id', { id })
+                .andWhere('versao = :versao', { versao: versaoEsperada })
+                .andWhere('status = :status', { status: 'pendente' })
+                .execute();
+            if (resultado.affected !== 1) {
+                throw new common_1.ConflictException('A solicitação foi alterada; consulte novamente');
+            }
+            await manager.insert(auditoria_entity_1.Auditoria, {
+                atorId,
+                acao: 'SOLICITACAO_APROVADA',
+                recursoTipo: 'solicitacao',
+                recursoId: id,
+                detalhes: {
+                    statusAnterior: 'pendente',
+                    statusAtual: 'aprovada',
+                    versaoAnterior: versaoEsperada,
+                },
+            });
+            return manager.findOneByOrFail(solicitacao_entity_1.Solicitacao, { id });
+        });
     }
 };
 exports.SolicitacoesService = SolicitacoesService;
 exports.SolicitacoesService = SolicitacoesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(solicitacao_entity_1.Solicitacao)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_3.DataSource])
 ], SolicitacoesService);
 //# sourceMappingURL=solicitacoes.service.js.map

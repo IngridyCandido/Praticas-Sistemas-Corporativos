@@ -13,12 +13,13 @@ const auth_module_1 = require("../auth/auth.module");
 const solicitacao_entity_1 = require("./solicitacao.entity");
 const solicitacoes_controller_1 = require("./solicitacoes.controller");
 const solicitacoes_service_1 = require("./solicitacoes.service");
+const auditoria_entity_1 = require("../auditoria/auditoria.entity");
 let SolicitacoesModule = class SolicitacoesModule {
 };
 exports.SolicitacoesModule = SolicitacoesModule;
 exports.SolicitacoesModule = SolicitacoesModule = __decorate([
     (0, common_1.Module)({
-        imports: [auth_module_1.AuthModule, typeorm_1.TypeOrmModule.forFeature([solicitacao_entity_1.Solicitacao])],
+        imports: [auth_module_1.AuthModule, typeorm_1.TypeOrmModule.forFeature([solicitacao_entity_1.Solicitacao, auditoria_entity_1.Auditoria])],
         controllers: [solicitacoes_controller_1.SolicitacoesController],
         providers: [solicitacoes_service_1.SolicitacoesService],
     })

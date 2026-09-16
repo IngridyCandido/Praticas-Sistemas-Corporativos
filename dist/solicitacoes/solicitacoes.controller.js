@@ -19,6 +19,7 @@ const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_decorator_1 = require("../auth/decorators/roles.decorator");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const criar_solicitacao_dto_1 = require("./dto/criar-solicitacao.dto");
+const aprovar_solicitacao_dto_1 = require("./dto/aprovar-solicitacao.dto");
 let SolicitacoesController = class SolicitacoesController {
     solicitacoesService;
     constructor(solicitacoesService) {
@@ -33,8 +34,8 @@ let SolicitacoesController = class SolicitacoesController {
     buscarPorId(id) {
         return this.solicitacoesService.buscarPorId(id);
     }
-    aprovar(id) {
-        return this.solicitacoesService.aprovar(id);
+    aprovar(id, dto, request) {
+        return this.solicitacoesService.aprovar(id, dto.versao, request.user.id);
     }
 };
 exports.SolicitacoesController = SolicitacoesController;
@@ -67,8 +68,10 @@ __decorate([
     (0, roles_decorator_1.Roles)('gestor'),
     (0, common_1.Patch)(':id/aprovar'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [Number, aprovar_solicitacao_dto_1.AprovarSolicitacaoDto, Object]),
     __metadata("design:returntype", void 0)
 ], SolicitacoesController.prototype, "aprovar", null);
 exports.SolicitacoesController = SolicitacoesController = __decorate([
