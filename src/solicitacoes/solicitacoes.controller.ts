@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, ParseIntPipe, UseGuards, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Patch, ParseIntPipe, UseGuards, Post, Body, Req } from '@nestjs/common';
 import { SolicitacoesService } from './solicitacoes.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -41,6 +41,6 @@ export class SolicitacoesController {
     @Body() dto: AprovarSolicitacaoDto,
     @Req() request: RequisicaoAutenticada,
   ) {
-    return this.service.aprovar(id, dto.versao, request.user.id);
-  }'
+    return this.solicitacoesService.aprovar(id, dto.versao, request.user.id);
+  }
 }
