@@ -1,5 +1,5 @@
 import { IsString, MaxLength, MinLength } from 'class-validator';
-import type { PrioridadeSolitacao } from '../solicitacao.entity';
+import type { PrioridadeSolicitacao} from '../solicitacao.entity';
 
 export class CriarSolicitacaoDto {
   @IsString()
@@ -14,5 +14,5 @@ export class CriarSolicitacaoDto {
 
   @IsString()
   @MaxLength(10)
-  prioridade?: PrioridadeSolitacao;
+  prioridade!: PrioridadeSolicitacao;
 }

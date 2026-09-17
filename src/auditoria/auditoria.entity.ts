@@ -8,23 +8,26 @@ import {
 @Entity({ name: 'auditorias' })
 export class Auditoria {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ name: 'ator_id', type: 'int' })
-  atorId: number;
+  atorId!: number;
 
   @Column({ type: 'varchar', length: 50 })
-  acao: string;
+  acao!: string;
+
+  @Column({ type: 'varchar', length: 200, nullable: true })
+  motivo?: string | null;
 
   @Column({ name: 'recurso_tipo', type: 'varchar', length: 50 })
-  recursoTipo: string;
+  recursoTipo!: string;
 
   @Column({ name: 'recurso_id', type: 'int' })
-  recursoId: number;
+  recursoId!: number;
 
   @Column({ type: 'jsonb', nullable: true })
-  detalhes: Record<string, unknown> | null;
+  detalhes!: Record<string, unknown> | null;
 
   @CreateDateColumn({ name: 'criada_em', type: 'timestamptz' })
-  criadaEm: Date;
+  criadaEm!: Date;
 }

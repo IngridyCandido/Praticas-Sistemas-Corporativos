@@ -77,6 +77,41 @@ let SolicitacoesService = class SolicitacoesService {
             return manager.findOneByOrFail(solicitacao_entity_1.Solicitacao, { id });
         });
     }
+    async rejeitar(id, versaoEsperada, atorId, motivo) {
+        return this.dataSource.transaction(async (manager) => {
+            const solicitacao = await manager.findOneBy(solicitacao_entity_1.Solicitacao, { id });
+            if (!solicitacao) {
+                throw new common_1.NotFoundException('Solicitação não encontrada');
+            }
+            if (solicitacao.status !== 'pendente') {
+                throw new common_1.ConflictException('Solicitação não está pendente');
+            }
+            const resultado = await manager
+                .createQueryBuilder()
+                .update(solicitacao_entity_1.Solicitacao)
+                .set({ status: 'rejeitada', versao: () => 'versao + 1' })
+                .where('id = :id', { id })
+                .andWhere('versao = :versao', { versao: versaoEsperada })
+                .andWhere('status = :status', { status: 'pendente' })
+                .execute();
+            if (resultado.affected !== 1) {
+                throw new common_1.ConflictException('A solicitação foi alterada; consulte novamente');
+            }
+            await manager.insert(auditoria_entity_1.Auditoria, {
+                atorId,
+                acao: 'SOLICITACAO_REJEITADA',
+                recursoTipo: 'solicitacao',
+                recursoId: id,
+                motivo: motivo,
+                detalhes: {
+                    statusAnterior: 'pendente',
+                    statusAtual: 'rejeitada',
+                    versaoAnterior: versaoEsperada,
+                },
+            });
+            return manager.findOneByOrFail(solicitacao_entity_1.Solicitacao, { id });
+        });
+    }
 };
 exports.SolicitacoesService = SolicitacoesService;
 exports.SolicitacoesService = SolicitacoesService = __decorate([

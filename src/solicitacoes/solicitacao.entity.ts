@@ -7,33 +7,32 @@ import {
   VersionColumn,
 } from 'typeorm';
 
-export type StatusSolicitacao = 'pendente' | 'aprovada';
-
-export type PrioridadeSolitacao = 'normal' | 'urgente';
+export type StatusSolicitacao = 'pendente' | 'aprovada' | 'rejeitada';
+export type PrioridadeSolicitacao = 'normal' | 'urgente';
 
 @Entity({ name: 'solicitacoes' })
 export class Solicitacao {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
   @Column({ type: 'varchar', length: 150 })
-  titulo!: string;
+  titulo: string;
 
-  @Column({ type: 'varchar', length: 30 })
-  centroCusto!: string;
+  @Column({ name: 'centro_custo', type: 'varchar', length: 30 })
+  centroCusto: string;
 
-  @Column({ type: 'varchar', length: 10 })
-  prioridade?: PrioridadeSolitacao;
+  @Column({ type: 'varchar', length: 10, default: 'normal' })
+  prioridade: PrioridadeSolicitacao;
 
   @Column({ type: 'varchar', length: 20, default: 'pendente' })
-  status!: StatusSolicitacao;
+  status: StatusSolicitacao;
 
   @VersionColumn({ name: 'versao' })
-  versao!: number;
+  versao: number;
 
   @CreateDateColumn({ name: 'criada_em', type: 'timestamptz' })
-  criadaEm!: Date;
+  criadaEm: Date;
 
   @UpdateDateColumn({ name: 'atualizada_em', type: 'timestamptz' })
-  atualizadaEm!: Date;
+  atualizadaEm: Date;
 }

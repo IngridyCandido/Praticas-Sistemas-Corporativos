@@ -20,6 +20,7 @@ const roles_decorator_1 = require("../auth/decorators/roles.decorator");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const criar_solicitacao_dto_1 = require("./dto/criar-solicitacao.dto");
 const aprovar_solicitacao_dto_1 = require("./dto/aprovar-solicitacao.dto");
+const rejeitar_solicitacao_dto_1 = require("./dto/rejeitar-solicitacao.dto");
 let SolicitacoesController = class SolicitacoesController {
     solicitacoesService;
     constructor(solicitacoesService) {
@@ -36,6 +37,9 @@ let SolicitacoesController = class SolicitacoesController {
     }
     aprovar(id, dto, request) {
         return this.solicitacoesService.aprovar(id, dto.versao, request.user.id);
+    }
+    rejeitar(id, dto, request) {
+        return this.solicitacoesService.rejeitar(id, dto.versao, request.user.id, dto.motivo);
     }
 };
 exports.SolicitacoesController = SolicitacoesController;
@@ -74,6 +78,17 @@ __decorate([
     __metadata("design:paramtypes", [Number, aprovar_solicitacao_dto_1.AprovarSolicitacaoDto, Object]),
     __metadata("design:returntype", void 0)
 ], SolicitacoesController.prototype, "aprovar", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('gestor'),
+    (0, common_1.Patch)(':id/rejeitar'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, rejeitar_solicitacao_dto_1.RejeitarSolicitacaoDto, Object]),
+    __metadata("design:returntype", void 0)
+], SolicitacoesController.prototype, "rejeitar", null);
 exports.SolicitacoesController = SolicitacoesController = __decorate([
     (0, common_1.Controller)('solicitacoes'),
     __metadata("design:paramtypes", [solicitacoes_service_1.SolicitacoesService])

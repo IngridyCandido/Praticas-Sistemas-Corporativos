@@ -15,6 +15,7 @@ let Auditoria = class Auditoria {
     id;
     atorId;
     acao;
+    motivo;
     recursoTipo;
     recursoId;
     detalhes;
@@ -33,6 +34,10 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', length: 50 }),
     __metadata("design:type", String)
 ], Auditoria.prototype, "acao", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 200, nullable: true }),
+    __metadata("design:type", Object)
+], Auditoria.prototype, "motivo", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'recurso_tipo', type: 'varchar', length: 50 }),
     __metadata("design:type", String)

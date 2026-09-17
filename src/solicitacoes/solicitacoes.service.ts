@@ -79,4 +79,46 @@ export class SolicitacoesService {
     return manager.findOneByOrFail(Solicitacao, { id });
   });
   }
+  async rejeitar(id: number, versaoEsperada: number, atorId: number, motivo: string) {
+  return this.dataSource.transaction(async (manager) => {
+    const solicitacao = await manager.findOneBy(Solicitacao, { id });
+
+    if (!solicitacao) {
+      throw new NotFoundException('Solicitação não encontrada');
+    }
+    if (solicitacao.status !== 'pendente') {
+      throw new ConflictException('Solicitação não está pendente');
+    }
+
+    const resultado = await manager
+      .createQueryBuilder()
+      .update(Solicitacao)
+      .set({ status: 'rejeitada', versao: () => 'versao + 1' })
+      .where('id = :id', { id })
+      .andWhere('versao = :versao', { versao: versaoEsperada })
+      .andWhere('status = :status', { status: 'pendente' })
+      .execute();
+
+    if (resultado.affected !== 1) {
+      throw new ConflictException(
+        'A solicitação foi alterada; consulte novamente',
+      );
+    }
+
+    await manager.insert(Auditoria, {
+      atorId,
+      acao: 'SOLICITACAO_REJEITADA',
+      recursoTipo: 'solicitacao',
+      recursoId: id,
+      motivo: motivo,
+      detalhes: {
+        statusAnterior: 'pendente',
+        statusAtual: 'rejeitada',
+        versaoAnterior: versaoEsperada,
+      },
+    });
+
+    return manager.findOneByOrFail(Solicitacao, { id });
+  });
+  }
 }
