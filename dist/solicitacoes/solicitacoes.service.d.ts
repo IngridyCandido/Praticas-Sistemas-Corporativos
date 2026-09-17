@@ -10,4 +10,5 @@ export declare class SolicitacoesService {
     buscarPorId(id: number): Promise<Solicitacao>;
     criar(dto: CriarSolicitacaoDto): Promise<Solicitacao>;
     aprovar(id: number, versaoEsperada: number, atorId: number): Promise<Solicitacao>;
+    rejeitar(id: number, versaoEsperada: number, atorId: number, motivo: string): Promise<Solicitacao>;
 }

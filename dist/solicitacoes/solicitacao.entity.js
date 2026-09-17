@@ -31,11 +31,11 @@ __decorate([
     __metadata("design:type", String)
 ], Solicitacao.prototype, "titulo", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 30 }),
+    (0, typeorm_1.Column)({ name: 'centro_custo', type: 'varchar', length: 30 }),
     __metadata("design:type", String)
 ], Solicitacao.prototype, "centroCusto", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 10 }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 10, default: 'normal' }),
     __metadata("design:type", String)
 ], Solicitacao.prototype, "prioridade", void 0);
 __decorate([
