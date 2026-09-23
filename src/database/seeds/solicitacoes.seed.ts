@@ -9,7 +9,7 @@ const dados = [
     prioridade: 'normal' as const,
   },
   {
-    titulo: 'Substituição de Servidor',
+    titulo: 'Substituição de servidor',
     centroCusto: 'TI-INFRA',
     prioridade: 'urgente' as const,
   },
@@ -19,10 +19,10 @@ async function executar() {
   await dataSource.initialize();
   const repository = dataSource.getRepository(Solicitacao);
 
-  for(const item of dados) {
+  for (const item of dados) {
     const existente = await repository.findOneBy({ titulo: item.titulo });
 
-    if(!existente) {
+    if (!existente) {
       await repository.save(
         repository.create({
           ...item,
@@ -35,10 +35,10 @@ async function executar() {
   await dataSource.destroy();
 }
 
-executar().catch(async (error) => {
-  console.error(error);
+executar().catch(async (erro) => {
+  console.error(erro);
 
-  if(dataSource.isInitialized) {
+  if (dataSource.isInitialized) {
     await dataSource.destroy();
   }
 

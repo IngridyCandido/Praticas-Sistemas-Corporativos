@@ -1,21 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
-import { SolicitacoesModule } from './solicitacoes/solicitacoes.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { SolicitacoesModule } from './solicitacoes/solicitacoes.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
         host: config.getOrThrow<string>('DB_HOST'),
-        port: Number(config.get('DB_PORT') ?? 5432),
+        port: Number(config.get('DB_PORT') ?? 5434),
         database: config.getOrThrow<string>('DB_NAME'),
         username: config.getOrThrow<string>('DB_USER'),
         password: config.getOrThrow<string>('DB_PASSWORD'),
@@ -25,13 +22,8 @@ import { AppService } from './app.service';
         migrationsRun: true,
       }),
     }),
-
     AuthModule,
     SolicitacoesModule,
   ],
-
-  controllers: [AppController],
-
-  providers: [AppService],
 })
 export class AppModule {}

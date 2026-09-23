@@ -1,151 +1,105 @@
-# Sistema de Solicitações
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-**Nome:** Ingridy Luzia Silva Candido
-**Matrícula:** 20251038060006
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-## 📋 Sobre o projeto
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-API para gerenciamento de solicitações, com autenticação de usuários e controle de acesso por perfil.
+## Description
 
-O projeto utiliza Docker para facilitar a instalação das dependências e a execução da aplicação.
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## 🚀 Como executar o projeto
-
-### 1. Clonar o repositório
-
-Clone o repositório para sua máquina:
-
-```bash
-git clone URL_DO_REPOSITORIO
-```
-
-Entre na pasta do projeto:
-
-```bash
-cd NOME_DA_PASTA
-```
-
-### 2. Configurar as variáveis de ambiente
-
-Crie o arquivo `.env` a partir do arquivo `.env.example`:
+## Project setup
 
 ```bash
-cp .env.example .env
+$ npm install
 ```
 
-No Windows, caso o comando acima não funcione, você pode simplesmente copiar o arquivo `.env.example`, renomeá-lo para `.env` e preencher os valores necessários.
-
-Defina principalmente o valor da variável:
-
-```env
-JWT_SECRET=sua_chave_secreta
-```
-
-> A `JWT_SECRET` deve ser uma chave utilizada pela aplicação para assinar e validar os tokens JWT.
-
-### 3. Iniciar a aplicação
-
-Execute:
+## Compile and run the project
 
 ```bash
-docker compose up
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
 ```
 
-O Docker irá instalar as dependências necessárias e iniciar a aplicação.
-
-Após a inicialização, a API estará disponível em:
-
-```text
-http://localhost:3000
-```
-
-## 🔐 Usuários para teste
-
-Utilize os seguintes usuários para testar os diferentes perfis da aplicação:
-
-| E-mail                | Perfil      |
-| --------------------- | ----------- |
-| `ingridy@empresa.com` | Gestor      |
-| `bruno@empresa.com`   | Solicitante |
-| `candido@empresa.com` | Auditor     |
-
-### Senhas
-
-Para o usuário **Gestor**, utilize a senha definida de acordo com a regra de senha solicitada no projeto.
-
-Os demais usuários podem ser utilizados conforme as credenciais configuradas na aplicação.
-
-## 🧪 Testando a API
-
-Você pode utilizar ferramentas como **Postman** ou **Thunder Client** para realizar os testes das rotas.
-
-### Login
-
-**POST**
-
-```text
-http://localhost:3000/auth/login
-```
-
-Utilize as credenciais de um dos usuários cadastrados.
-
-Após realizar o login, utilize o token JWT retornado para acessar as rotas protegidas.
-
-### Consultar perfil
-
-**GET**
-
-```text
-http://localhost:3000/auth/perfil
-```
-
-Essa rota permite consultar as informações do usuário autenticado.
-
-### Relatório de solicitações
-
-**GET**
-
-```text
-http://localhost:3000/solicitacoes/relatorio
-```
-
-Essa rota permite consultar o relatório de solicitações de acordo com as permissões do usuário autenticado.
-
-### Aprovar solicitação
-
-**PATCH**
-
-```text
-http://localhost:3000/solicitacoes/:id/aprovar
-```
-
-Substitua `:id` pelo identificador da solicitação que deseja aprovar.
-
-Exemplo:
-
-```text
-http://localhost:3000/solicitacoes/1/aprovar
-```
-
-## 📌 Rotas principais
-
-| Método | Rota                        | Descrição                                |
-| ------ | --------------------------- | ---------------------------------------- |
-| POST   | `/auth/login`               | Realiza o login                          |
-| GET    | `/auth/perfil`              | Consulta o perfil do usuário autenticado |
-| GET    | `/solicitacoes/relatorio`   | Consulta o relatório de solicitações     |
-| PATCH  | `/solicitacoes/:id/aprovar` | Aprova uma solicitação                   |
-
-## 🛑 Encerrando a aplicação
-
-Para encerrar a aplicação executada pelo Docker, pressione:
-
-```text
-Ctrl + C
-```
-
-Caso queira remover os containers após a execução:
+## Run tests
 
 ```bash
-docker compose down
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
 ```
+
+## Deployment
+
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+
+```bash
+$ npm install -g @nestjs/mau
+$ mau deploy
+```
+
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+
+## Resources
+
+Check out a few resources that may come in handy when working with NestJS:
+
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+##E-mail dos Usuários 
+
+ingridy@empresa.com
+20261038060006
+candido@empresa.com
+60006083016202
