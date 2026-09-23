@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CentroCustoModule } from './centro-custo/centro-custo.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AppService } from './app.service';
 
     AuthModule,
     SolicitacoesModule,
+    CentroCustoModule,
   ],
 
   controllers: [AppController],
