@@ -1,7 +1,8 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { Papel } from '../../usuarios/usuarios.service';
-import { ROLES_KEY } from '../decorators/roles.decorator';
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { Papel } from "../../usuarios/usuarios.service";
+import { ROLES_KEY } from "../decorators/roles.decorator";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -13,7 +14,7 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    if (!papeisExigidos?.length) {
+    if(!papeisExigidos?.length) {
       return true;
     }
 

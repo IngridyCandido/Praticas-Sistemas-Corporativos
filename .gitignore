@@ -2,8 +2,9 @@
 /dist
 /node_modules
 /build
-.env
-.env.local
+
+# TypeScript build cache
+*.tsbuildinfo
 
 # Logs
 logs

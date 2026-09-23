@@ -1,32 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { UsuariosService, UsuarioAutenticado } from '../usuarios/usuarios.service';
+import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-
-
+import {
+  UsuarioAutenticado,
+  UsuariosService,
+} from "../usuarios/usuarios.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usuariosService: UsuariosService,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   async validarUsuario(email: string, senha: string) {
     const usuario = this.usuariosService.buscarPorEmail(email);
 
-    if (!usuario || !usuario.ativo) {
+    if(!usuario || !usuario.ativo) {
       return null;
     }
 
     const senhaValida = await bcrypt.compare(senha, usuario.senhaHash);
 
-    if (!senhaValida) {
+    if(!senhaValida) {
       return null;
     }
 
     const { senhaHash: _senhaHash, ...principal } = usuario;
-
     return principal;
   }
 

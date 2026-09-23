@@ -1,21 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
+import { Injectable } from "@nestjs/common";
+import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { Papel } from '../../usuarios/usuarios.service';
+import { Papel } from "../../usuarios/usuarios.service";
+import { Passport } from "passport";
 
 type JwtPayload = {
   sub: number;
   email: string;
   papel: Papel;
-};
+}
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     const secret = process.env.JWT_SECRET;
 
-    if (!secret) {
-      throw new Error('JWT_SECRET nao foi definido');
+    if(!secret) {
+      throw new Error("JWT_SECRET não foi definido");
     }
 
     super({

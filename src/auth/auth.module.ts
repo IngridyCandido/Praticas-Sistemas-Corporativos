@@ -1,29 +1,29 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
-import { UsuariosModule } from '../usuarios/usuarios.module';
-import { AuthController } from './auth.controller';
+import { PassportModule } from "@nestjs/passport";
+import { UsuariosModule } from "../usuarios/usuarios.module";
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { AuthController } from './auth.controller';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { RolesGuard } from './guards/roles.guard';
 
 @Module({
   imports: [
     UsuariosModule,
-    PassportModule,
+    PassportModule.register({ defaultStrategy: 'local' }),
     JwtModule.registerAsync({
       useFactory: () => {
         const secret = process.env.JWT_SECRET;
 
-        if (!secret) {
-          throw new Error('JWT_SECRET nao foi definido');
-        }
+        if(!secret) {
+          throw new Error("JWT_SECRET não foi definido");
+        } 
 
         return {
-          secret,
+          secret, 
           signOptions: {
             expiresIn: Number(process.env.JWT_EXPIRES_IN_SECONDS ?? 900),
           },
@@ -32,14 +32,8 @@ import { RolesGuard } from './guards/roles.guard';
     }),
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    LocalStrategy,
-    JwtStrategy,
-    LocalAuthGuard,
-    JwtAuthGuard,
-    RolesGuard
-  ],
-  exports: [JwtAuthGuard, RolesGuard],
+  providers: [AuthService, LocalStrategy, LocalAuthGuard, JwtAuthGuard, JwtStrategy, RolesGuard],
+  exports: [PassportModule, JwtAuthGuard, RolesGuard],
 })
+
 export class AuthModule {}
