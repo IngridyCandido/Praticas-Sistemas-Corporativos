@@ -9,9 +9,9 @@ export type Usuario = {
   senhaHash: string;
   papel: Papel;
   ativo: boolean;
-};
+}
 
-export type UsuarioAutenticado = Omit<Usuario, 'senhaHash'>;
+export type UsuarioAutenticado = Omit<Usuario, "senhaHash">
 
 @Injectable()
 export class UsuariosService {
@@ -20,7 +20,7 @@ export class UsuariosService {
       id: 1,
       nome: 'Ingridy',
       email: 'ingridy@empresa.com',
-      senhaHash: '$2b$12$FDi5jVZIuXug2wYGc/1Z5.p79CZuZPVjnBEDYTmKR6VTbjI.stsvy',
+      senhaHash: '$2b$12$lBMyfsmGBx.SPOVgHCT4WOk9q9YBfYwepujIJ2kE/.6Nm1sN.asZO',
       papel: 'gestor',
       ativo: true,
     },
@@ -28,7 +28,7 @@ export class UsuariosService {
       id: 2,
       nome: 'Bruno Silva',
       email: 'bruno@empresa.com',
-      senhaHash:'$2b$12$M2.V/TIq6fUawUkmPAObj.8XiJGDDkpWMcsKGa0Sn7Kkuumpkg0c.',
+      senhaHash: '$2b$12$idSpkbR3GAZOAd.j.QRx6OCDaaoyOqiB7NwhEQHr34M5njnJnz8U6',
       papel: 'solicitante',
       ativo: true,
     },
@@ -36,13 +36,13 @@ export class UsuariosService {
       id: 3,
       nome: 'Candido',
       email: 'candido@empresa.com',
-      senhaHash: '$2b$12$Alf/PYjU2gxwLPGmUO52xufTGwkLxwUxml7X/4zMrAIaiR.FBZ9Pu',
+      senhaHash: '$2b$12$EH6Q4ht3odPbZXO8VNoD7O8mC5Kb3Vm5tQSZC.9wk3C3rtwWupv.2',
       papel: 'auditor',
       ativo: true,
     },
   ];
 
   buscarPorEmail(email: string) {
-    return this.usuarios.find((usuario) => usuario.email === email);
+    return this.usuarios.find(usuario => usuario.email === email);
   }
 }

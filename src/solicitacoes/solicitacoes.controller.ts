@@ -1,34 +1,42 @@
-import { Controller, Get, Param, Patch, ParseIntPipe, UseGuards, Post, Body, Req } from '@nestjs/common';
+import {Controller, Get, Patch, Param, ParseIntPipe, UseGuards, Post, Body, Query, Req} from '@nestjs/common';
 import { SolicitacoesService } from './solicitacoes.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { CriarSolicitacaoDto } from './dto/criar-solicitacao.dto';
+import { FiltrarSolicitacoesDto } from './dto/filtrar-solicitacoes.dto';
 import { AprovarSolicitacaoDto } from './dto/aprovar-solicitacao.dto';
 import { RejeitarSolicitacaoDto } from './dto/rejeitar-solicitacao.dto';
 
 type RequisicaoAutenticada = {
-    user: { id: number; papel: string };
-  };
+  user: { id: number; papel: string };
+};
 
 @Controller('solicitacoes')
 export class SolicitacoesController {
-  constructor(private readonly solicitacoesService: SolicitacoesService) { }
+  constructor(
+    private readonly solicitacoesService: SolicitacoesService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
   criar(@Body() dto: CriarSolicitacaoDto) {
     return this.solicitacoesService.criar(dto);
   }
-  
-  @UseGuards(JwtAuthGuard)
+
   @Get()
-  listar() {
-    return this.solicitacoesService.listar();
+  listar(@Query() filtros: FiltrarSolicitacoesDto) {
+    return this.solicitacoesService.listar(filtros);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('gestor', 'auditor')
+  @Get('relatorio')
+  relatorio() {
+    return this.solicitacoesService.relatorio();
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   buscarPorId(@Param('id', ParseIntPipe) id: number) {
     return this.solicitacoesService.buscarPorId(id);
@@ -42,7 +50,11 @@ export class SolicitacoesController {
     @Body() dto: AprovarSolicitacaoDto,
     @Req() request: RequisicaoAutenticada,
   ) {
-    return this.solicitacoesService.aprovar(id, dto.versao, request.user.id);
+    return this.solicitacoesService.aprovar(
+      id,
+      dto.versao,
+      request.user.id,
+    );
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -53,6 +65,11 @@ export class SolicitacoesController {
     @Body() dto: RejeitarSolicitacaoDto,
     @Req() request: RequisicaoAutenticada,
   ) {
-    return this.solicitacoesService.rejeitar(id, dto.versao, request.user.id, dto.motivo);
+    return this.solicitacoesService.rejeitar(
+      id,
+      dto.versao,
+      dto.justificativa,
+      request.user.id,
+    );
   }
 }
